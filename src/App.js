@@ -1,25 +1,42 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
 
-function App() {
+const App = () => {
+  const [showDialog, setShowDialog] = useState(false);
+
+  const openDialog = () => {
+    setShowDialog(true);
+  };
+
+  const closeDialog = () => {
+    setShowDialog(false);
+  };
+
+  const requestNotificationPermission = () => {
+    Notification.requestPermission().then((permission) => {
+      if (permission === "granted") {
+        console.log("Notification permission granted");
+        closeDialog();
+      }
+    });
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='App'>
+      <p>Your app content...</p>
+      <button onClick={openDialog}>Select Notification State</button>
+      {showDialog && (
+        <div className='notification-dialog'>
+          <h2>Select Notification State</h2>
+          <p>Choose your notification settings:</p>
+          <button onClick={requestNotificationPermission}>
+            Request Permission
+          </button>
+          {/* You can add more options or instructions for managing settings */}
+          <button onClick={closeDialog}>Close</button>
+        </div>
+      )}
     </div>
   );
-}
+};
 
 export default App;
